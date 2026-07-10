@@ -9,10 +9,8 @@
 \usepackage{placeins}
 \usepackage[spanish, es-tabla]{babel}
 \usepackage[most]{tcolorbox}
-\usepackage[margin=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
-\usepackage{parskip}
-\setlength{\parskip}{4pt}
-\setlength{\parindent}{0pt}
+% Ajuste a 2.54cm (1 pulgada) para cumplir estrictamente con APA 7
+\usepackage[margin=2.54cm]{geometry} 
 \usepackage{booktabs}
 \usepackage{titlesec}
 \usepackage{enumitem}
@@ -28,6 +26,11 @@
 \usepackage{courier}
 \usepackage{amsmath}
 \usepackage[T1]{fontenc}
+\usepackage{xparse}
+
+% PAQUETES NUEVOS PARA APA 7
+\usepackage{setspace} % Para el interlineado doble
+\usepackage{indentfirst} % Para aplicar sangría al primer párrafo de cada sección
 
 % Colores
 \definecolor{golden} {RGB} {140,23,26}
@@ -43,37 +46,35 @@
 \definecolor{esquemabg} {RGB} {245,255,245}
 \definecolor{esquemaborder} {RGB} {0,130,80}
 
-\tcbuselibrary{listings, skins,breakable}
+\tcbuselibrary{listings, skins, breakable}
 
-% Cajas personalizadas
+% Cajas personalizadas (Se mantienen definidas por si las necesitas, 
+% aunque APA 7 prioriza tablas y figuras estándar)
 \newtcolorbox{teorica}{
     colback=teoricabg,
     colframe=teoricaborder,
-    arc=4pt,
-    boxrule=1pt,
-    left=4mm, right=4mm, top=2mm, bottom=2mm,
-    breakable,
+    arc=4pt, boxrule=1pt,
+    left=4mm, right=4mm, top=2mm, bottom=2mm, breakable,
 }
-
 \newtcolorbox{transformacion}{
     colback=transformbg,
     colframe=transformborder,
-    arc=4pt,
-    boxrule=1pt,
-    left=4mm, right=4mm, top=2mm, bottom=2mm,
-    breakable,
+    arc=4pt, boxrule=1pt,
+    left=4mm, right=4mm, top=2mm, bottom=2mm, breakable,
 }
-
 \newtcolorbox{esquema}{
     colback=esquemabg,
     colframe=esquemaborder,
-    arc=4pt,
-    boxrule=1pt,
-    left=4mm, right=4mm, top=2mm, bottom=2mm,
-    breakable,
+    arc=4pt, boxrule=1pt,
+    left=4mm, right=4mm, top=2mm, bottom=2mm, breakable,
 }
 
-% Formato de Títulos y Subtítulos (Estos armarán el índice automáticamente)
+\newcommand{\celdaAzul}[1]{\cellcolor{azulclaro}\color{white}\textbf{#1}}
+\hypersetup{linkcolor=black, colorlinks=true}
+
+% ==========================================
+% CONFIGURACIÓN DE TÍTULOS: CARÁTULA E ÍNDICE
+% ==========================================
 \titleformat{\section}
     {\color{azulFisi}\normalfont\Large\bfseries}
     {\thesection.}{0.5em}{\MakeUppercase}[\titleline{\color{azulFisi}\titlerule[1.5pt]}]
@@ -82,29 +83,87 @@
     {\color{azulFisi}\normalfont\large\bfseries}
     {\thesubsection.} {0.5em}{}
 
-\newcommand{\celdaAzul}[1]{\cellcolor{azulclaro}\color{white}\textbf{#1}}
-
-\hypersetup{linkcolor=black,colorlinks=true}
-
 % ==========================================
 % INICIO DEL DOCUMENTO Y ESTRUCTURA
 % ==========================================
 \begin{document}
 
-% 1. Portada
+% Formato de párrafo para la sección inicial (sin sangría, espaciado simple)
+\singlespacing
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% 1. Portada (Asegúrate de que tu archivo se llame Carátula_índice.tex o portada.tex según corresponda)
 \input{partes/Carátula_índice.tex}
 
-% 2. Índice (Se genera solo basándose en los \section y \subsection)
+% 2. Índice
 \newpage
 \tableofcontents
+
 \newpage
 
+% ==========================================
+% TRANSICIÓN A FORMATO DE DESARROLLO
+% ==========================================
+
+% Interlineado doble
+\doublespacing
+
+% Quitamos la sangría de primera línea clásica.
+% Al estar en 0pt, todo el bloque de texto quedará alineado exacto al título que le corresponde.
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.27cm}
+
+% 1. Alineación y formato de los títulos usando titlesec
+% Nivel 1 (\section): CENTRADO y SIN NÚMERO
+\titleformat{\section}
+    {\color{black}\normalfont\Large\bfseries\centering} % Añadimos \centering
+    {} % Dejamos este espacio vacío para ocultar el número (antes decía \thesection.)
+    {0pt} % Espacio entre número y texto a 0
+    {}
+\titlespacing{\section}{0pt}{12pt}{6pt} 
+
+% Nivel 2 (\subsection): Alineado a la izquierda, Negrita, CON NÚMERO
+\titleformat{\subsection}
+    {\color{black}\normalfont\large\bfseries}
+    {\thesubsection.} % Mantiene el número (ej. 2.1.)
+    {1em}
+    {}
+\titlespacing{\subsection}{1.27cm}{12pt}{6pt} % 1.27cm de sangría
+
+% Nivel 3 (\subsubsection): Alineado a la izquierda, Negrita, CON NÚMERO
+\titleformat{\subsubsection}
+    {\color{black}\normalfont\normalsize\bfseries}
+    {\thesubsubsection.} % Mantiene el número (ej. 2.1.1.)
+    {1em}
+    {}
+\titlespacing{\subsubsection}{2.54cm}{12pt}{6pt} % 2.54cm de sangría
+
+% 2. Modificamos los comandos para que el margen izquierdo se aplique AUTOMÁTICAMENTE después del título
+\let\oldsection\section
+\let\oldsubsection\subsection
+\let\oldsubsubsection\subsubsection
+
+\DeclareDocumentCommand{\section}{ s o m }{%
+  \IfBooleanTF{#1}{\oldsection*{#3}}{\IfValueTF{#2}{\oldsection[#2]{#3}}{\oldsection{#3}}}%
+  \par\setlength{\leftskip}{0pt}%
+}
+
+\DeclareDocumentCommand{\subsection}{ s o m }{%
+  \IfBooleanTF{#1}{\oldsubsection*{#3}}{\IfValueTF{#2}{\oldsubsection[#2]{#3}}{\oldsubsection{#3}}}%
+  \par\setlength{\leftskip}{1.27cm}%
+}
+
+\DeclareDocumentCommand{\subsubsection}{ s o m }{%
+  \IfBooleanTF{#1}{\oldsubsubsection*{#3}}{\IfValueTF{#2}{\oldsubsubsection[#2]{#3}}{\oldsubsubsection{#3}}}%
+  \par\setlength{\leftskip}{2.54cm}%
+}
 % 3. Contenido separado por archivos
 \input{partes/introducción.tex}
 \input{partes/Andrea.tex}
+\input{partes/Isabel.tex}
 \input{partes/Saúl.tex}
 \input{partes/Diana.tex}
-\input{partes/Isabel.tex}
-%\input{partes/Conclusiones.tex}
+\input{partes/conclusiones.tex}
 
 \end{document}
