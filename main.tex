@@ -1,15 +1,10 @@
 \documentclass[12pt]{article}
-
-% ==========================================
-% FORMATO, PAQUETES Y CONFIGURACIONES
-% ==========================================
 \usepackage[utf8]{inputenc}
 \usepackage[x11names]{xcolor}
 \usepackage{graphicx}
 \usepackage{placeins}
 \usepackage[spanish, es-tabla]{babel}
 \usepackage[most]{tcolorbox}
-% Ajuste a 2.54cm (1 pulgada) para cumplir estrictamente con APA 7
 \usepackage[margin=2.54cm]{geometry} 
 \usepackage{booktabs}
 \usepackage{titlesec}
@@ -26,7 +21,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
-    urlcolor=blue % Define el color azul exacto para los enlaces como en tu muestra
+    urlcolor=blue 
 }
 \usepackage{listings}
 \usepackage{courier}
@@ -34,11 +29,11 @@
 \usepackage[T1]{fontenc}
 \usepackage{xparse}
 
-% PAQUETES PARA APA 7
-\usepackage{setspace} % Para el interlineado doble
-\usepackage{indentfirst} % Para aplicar sangría al primer párrafo de cada sección
 
-% Colores
+\usepackage{setspace}
+\usepackage{indentfirst} 
+
+
 \definecolor{golden} {RGB} {140,23,26}
 \definecolor{goldford}{RGB}{69,59,41}
 \definecolor{rojo} {RGB} {140,23,26}
@@ -54,7 +49,7 @@
 
 \tcbuselibrary{listings, skins, breakable}
 
-% Cajas personalizadas 
+
 \newtcolorbox{teorica}{
     colback=teoricabg,
     colframe=teoricaborder,
@@ -77,9 +72,6 @@
 \newcommand{\celdaAzul}[1]{\cellcolor{azulclaro}\color{white}\textbf{#1}}
 \hypersetup{linkcolor=black, colorlinks=true}
 
-% ==========================================
-% CONFIGURACIÓN DE TÍTULOS: CARÁTULA E ÍNDICE
-% ==========================================
 \titleformat{\section}
     {\color{azulFisi}\normalfont\Large\bfseries}
     {\thesection.}{0.5em}{\MakeUppercase}[\titleline{\color{azulFisi}\titlerule[1.5pt]}]
@@ -88,63 +80,53 @@
     {\color{azulFisi}\normalfont\large\bfseries}
     {\thesubsection.} {0.5em}{}
 
-% ==========================================
-% INICIO DEL DOCUMENTO Y ESTRUCTURA
-% ==========================================
+
 \begin{document}
 
-% Formato de párrafo para la sección inicial (sin sangría, espaciado simple)
+
 \singlespacing
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
 
-% 1. Portada 
+
 \input{partes/Carátula_índice.tex}
 
-% 2. Índice
+
 \newpage
 \tableofcontents
 
 \newpage
 
-% ==========================================
-% TRANSICIÓN A FORMATO DE DESARROLLO
-% ==========================================
-
-% Interlineado doble
 \doublespacing
 
-% Quitamos la sangría de primera línea clásica.
-% Al estar en 0pt, todo el bloque de texto quedará alineado exacto al título que le corresponde.
 \setlength{\parskip}{0pt}
 \setlength{\parindent}{1.27cm}
 
-% 1. Alineación y formato de los títulos usando titlesec
-% Nivel 1 (\section): 
+
 \titleformat{\section}
-    {\color{black}\normalfont\Large\bfseries\centering} % Añadimos \centering
-    {} % Dejamos este espacio vacío para ocultar el número (antes decía \thesection.)
-    {0pt} % Espacio entre número y texto a 0
+    {\color{black}\normalfont\Large\bfseries\centering} 
+    {} 
+    {0pt} 
     {}
 \titlespacing{\section}{0pt}{12pt}{6pt} 
 
-% Nivel 2 (\subsection): 
+
 \titleformat{\subsection}
     {\color{black}\normalfont\large\bfseries}
-    {\thesubsection.} % Mantiene el número (ej. 2.1.)
+    {\thesubsection.} 
     {1em}
     {}
-\titlespacing{\subsection}{1.27cm}{12pt}{6pt} % 1.27cm de sangría
+\titlespacing{\subsection}{1.27cm}{12pt}{6pt} 
 
-% Nivel 3 (\subsubsection): 
+
 \titleformat{\subsubsection}
     {\color{black}\normalfont\normalsize\bfseries}
-    {\thesubsubsection.} % Mantiene el número (ej. 2.1.1.)
+    {\thesubsubsection.} 
     {1em}
     {}
-\titlespacing{\subsubsection}{2.54cm}{12pt}{6pt} % 2.54cm de sangría
+\titlespacing{\subsubsection}{2.54cm}{12pt}{6pt} 
 
-% 2. Modificamos los comandos para que el margen izquierdo se aplique AUTOMÁTICAMENTE después del título
+
 \let\oldsection\section
 \let\oldsubsection\subsection
 \let\oldsubsubsection\subsubsection
@@ -163,7 +145,7 @@
   \IfBooleanTF{#1}{\oldsubsubsection*{#3}}{\IfValueTF{#2}{\oldsubsubsection[#2]{#3}}{\oldsubsubsection{#3}}}%
   \par\setlength{\leftskip}{2.54cm}%
 }
-% 3. Contenido separado por archivos
+
 \input{partes/introducción.tex}
 \newpage
 
